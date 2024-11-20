@@ -12,7 +12,7 @@ def make_tone(notes, times):
     samples = np.zeros((sample_rate), dtype=np.int16)
     for index, frequency in enumerate(notes):
         duration = times[index]/2
-        samples = np.concatenate((samples,((32767 * np.round(np.sin(2.0 * np.pi * frequency * np.arange(sample_rate * duration) / sample_rate))).astype(np.int16))),axis=0)
+        samples = np.concatenate((samples,((32767/16 * np.round(np.sin(2.0 * np.pi * frequency * np.arange(sample_rate * duration) / sample_rate))).astype(np.int16))),axis=0)
     return samples
 
 
@@ -65,7 +65,7 @@ try:
 
     min_length = min(len(lead), len(bass))
     mixed_data = []
-    chunk_size = int(44100/15)
+    chunk_size = int(44100/20)
 
     # Durch Iteration die Chunks abwechselnd hinzufügen
     for i in range(0, min_length, chunk_size):
@@ -74,7 +74,7 @@ try:
 
 
     pygame.sndarray.make_sound(np.array(mixed_data)).play()
-    time.sleep(min_length/44100*2)
+    time.sleep(min_length/44100)
 except KeyboardInterrupt:
     print("\nAbspielen unterbrochen.")
 finally:
